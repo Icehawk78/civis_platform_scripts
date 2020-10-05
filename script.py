@@ -1,2 +1,4 @@
 # Enter your script here.
-#kw test comment
+//merge conflict!
+// 10.05.20 kw notes
+
