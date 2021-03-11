@@ -10,6 +10,7 @@ begin
     root_feature = {
       'id': base_id,
       'name': ENV['root_name'] || 'Default Root Name',
+      'column_name': ENV['column_name'],
       'root_id': nil,
       'parent_id': nil,
       'variable_type_id': (ENV['is_multiselect'] ? 5 : 3),
@@ -22,11 +23,14 @@ begin
   feature_template = {
     id: -1,
     name: '',
+    column_name: '',
     value: '',
     parent_id: root_feature['id'],
     root_id: root_feature['id'],
+    ui_section_id: root_feature['ui_section_id'],
     variable_type_id: root_feature['variable_type_id'],
-    is_cuttable: root_feature['is_cuttable']
+    is_cuttable: root_feature['is_cuttable'],
+    props: {}
   }
 
   @connection = PG::connect(
@@ -36,12 +40,14 @@ begin
     user: ENV['DATABASE_CREDENTIAL_USERNAME'],
     password: ENV['DATABASE_CREDENTIAL_PASSWORD']
   )
-  res = @connection.exec("SELECT DISTINCT #{ENV['column_name']} as column_value, #{ENV['name_column'] || ENV['column_name']} as column_name FROM #{ENV['schema_and_table']}").values
+  res = @connection.exec("SELECT DISTINCT #{ENV['column_name']} as column_value, #{ENV['name_column'] || ENV['column_name']} as column_name FROM #{ENV['schema_and_table']} ORDER BY 2 ASC").values
   new_features = res.each_with_index.map {|res, index|
     current = {
       id: base_id + index,
-      name: res.first,
-      value: res.last
+      name: res.last,
+      column_name: ENV['column_name'],
+      value: res.first,
+      order: index
     }
     Hash.new.merge(feature_template).merge(current)
   }
