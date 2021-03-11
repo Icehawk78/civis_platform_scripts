@@ -53,7 +53,7 @@ begin
   }
 
   @connection = PG::connect(
-    host: ENV['DATBASE_HOST'],
+    host: ENV['DATABASE_HOST'],
     port: ENV['DATABASE_PORT'],
     dbname: ENV['DATABASE_DATABASE'],
     user: ENV['DATABASE_CREDENTIAL_USERNAME'],
