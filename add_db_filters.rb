@@ -71,8 +71,10 @@ begin
   @json['other_seeds']['features'].push(*new_features)
   new_config = JSON.pretty_generate(@json)
   civis_file = post_url("#{ENV['CIVIS_API_ENDPOINT']}/files", {name: 'config.json'})
-  civis_file['upload_fields']['file'] = new_config
-  post_url(civis_file['upload_url'], civis_file['upload_fields'])
+  puts civis_file
+  upload_fields = civis_file['upload_fields'] ||= {}
+  upload_fields['file'] = new_config
+  post_url(civis_file['upload_url'], upload_fields)
   # civis_file_id = post_url("#{ENV['CIVIS_API_ENDPOINT']}/json_values", {name: 'config.json', valueStr: new_config})
   post_url("#{ENV['CIVIS_API_ENDPOINT']}/scripts/containers/#{ENV['CIVIS_JOB_ID']}/runs/#{ENV['CIVIS_RUN_ID']}/outputs", {objectType: 'File', objectId: civis_file['id']})
 rescue PG::Error => e
