@@ -2,14 +2,6 @@ require 'json'
 require 'pg'
 require 'rest-client'
 
-def post_url(url, data)
-  uri, https = get_https(url)
-  req = Net::HTTP::Post.new(uri.path)
-  req['Authorization'] = "Bearer #{ENV['CIVIS_API_KEY']}"
-  req.set_form_data(data)
-  https.request(req).body
-end
-
 begin
   @json = JSON.parse(RestClient.get(ENV['json_config_url']).body)
   base_id = @json['other_seeds']['features'].map{|f| f['id']}.compact.max + 1
