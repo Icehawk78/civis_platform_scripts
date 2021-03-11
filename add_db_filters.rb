@@ -42,7 +42,8 @@ begin
     user: ENV['DATABASE_CREDENTIAL_USERNAME'],
     password: ENV['DATABASE_CREDENTIAL_PASSWORD']
   )
-  res = @connection.exec("SELECT DISTINCT #{ENV['column_name']} as column_value, #{ENV['name_column'] || ENV['column_name']} as column_name FROM #{ENV['schema_and_table']} ORDER BY 2 ASC").values
+  name_column = (ENV['name_column'].nil? || ENV['name_column'].empty?) ? ENV['column_name'] : ENV['name_column']
+  res = @connection.exec("SELECT DISTINCT #{ENV['column_name']} as column_value, #{name_column} as column_name FROM #{ENV['schema_and_table']} ORDER BY 2 ASC").values
   new_features = res.each_with_index.map {|res, index|
     current = {
       id: base_id + index,
