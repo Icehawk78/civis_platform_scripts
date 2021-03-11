@@ -1,21 +1,6 @@
 require 'json'
 require 'pg'
-require 'net/http'
-require 'net/https'
-require 'uri'
-
-def get_https(url)
-  uri = URI.parse(url)
-  https = Net::HTTP.new(uri.host, uri.port)
-  https.use_ssl = true
-  return uri, https
-end
-
-def get_url(url)
-  uri, https = get_https(url)
-  req = Net::HTTP::Get.new(uri)
-  https.request(req).body
-end
+require 'rest-client'
 
 def post_url(url, data)
   uri, https = get_https(url)
@@ -26,7 +11,7 @@ def post_url(url, data)
 end
 
 begin
-  @json = JSON.parse(get_url(ENV['json_config_url']))
+  @json = JSON.parse(RestClient.get(ENV['json_config_url']).body)
   base_id = @json['other_seeds']['features'].map{|f| f['id']}.compact.max + 1
   root_feature = @json['other_seeds']['features'].find{|f| f['id'] == ENV['root_id']} if ENV['root_id']
   if root_feature.nil?
@@ -70,14 +55,12 @@ begin
   }
   @json['other_seeds']['features'].push(*new_features)
   new_config = JSON.pretty_generate(@json)
-  civis_file = JSON.parse(post_url("#{ENV['CIVIS_API_ENDPOINT']}/files", {name: 'config.json'}))
-  puts civis_file
-  puts civis_file.keys
+  civis_file = JSON.parse(RestClient.post("#{ENV['CIVIS_API_ENDPOINT']}/files", {name: 'config.json'}, {'Authorization': "Bearer #{ENV['CIVIS_API_KEY']}"}))
   upload_fields = civis_file['uploadFields']
   upload_fields['file'] = new_config
-  post_url(civis_file['uploadUrl'] + '/', upload_fields)
+  RestClient.post(civis_file['uploadUrl'] + '/', upload_fields)
   # civis_file_id = post_url("#{ENV['CIVIS_API_ENDPOINT']}/json_values", {name: 'config.json', valueStr: new_config})
-  post_url("#{ENV['CIVIS_API_ENDPOINT']}/scripts/containers/#{ENV['CIVIS_JOB_ID']}/runs/#{ENV['CIVIS_RUN_ID']}/outputs", {objectType: 'File', objectId: civis_file['id']})
+  RestClient.post("#{ENV['CIVIS_API_ENDPOINT']}/scripts/containers/#{ENV['CIVIS_JOB_ID']}/runs/#{ENV['CIVIS_RUN_ID']}/outputs", {objectType: 'File', objectId: civis_file['id']}, {'Authorization': "Bearer #{ENV['CIVIS_API_KEY']}"})
 rescue PG::Error => e
   puts e.message
 ensure
