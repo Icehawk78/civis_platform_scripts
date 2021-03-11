@@ -70,8 +70,8 @@ begin
   }
   @json['other_seeds']['features'].push(*new_features)
   new_config = JSON.pretty_generate(@json)
-  civis_json_id = post_url("https://#{ENV['CIVIS_API_ENDPOINT']}/json_values", {name: 'config.json', valueStr: new_config})
-  post_url("https://{ENV['CIVIS_API_ENDPOINT']}/scripts/containers/#{ENV['CIVIS_JOB_ID']}/runs/#{ENV['CIVIS_RUN_ID']}/outputs", {objectType: 'JSONValue', objectId: civis_json_id})
+  civis_json_id = post_url("#{ENV['CIVIS_API_ENDPOINT']}/json_values", {name: 'config.json', valueStr: new_config})
+  post_url("{ENV['CIVIS_API_ENDPOINT']}/scripts/containers/#{ENV['CIVIS_JOB_ID']}/runs/#{ENV['CIVIS_RUN_ID']}/outputs", {objectType: 'JSONValue', objectId: civis_json_id})
 rescue PG::Error => e
   puts e.message
 ensure
