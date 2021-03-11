@@ -54,7 +54,7 @@ begin
   civis_file['uploadFields'].each{|k,v|
     upload_fields[k] = v unless k == 'key'
   }
-  upload_fields['multipart'] = true
+  # upload_fields['multipart'] = true
   upload_fields['file'] = config_file
   puts 'Civis File:'
   puts civis_file
