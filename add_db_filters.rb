@@ -1,7 +1,6 @@
 require 'json'
 require 'pg'
 require 'rest-client'
-require 'stringio'
 
 begin
   @json = JSON.parse(RestClient.get(ENV['json_config_url']).body)
@@ -55,7 +54,7 @@ begin
   civis_file['uploadFields'].each{|k,v|
     upload_fields[k] = v unless k == 'key'
   }
-  upload_fields['file'] = new_config
+  upload_fields['file'] = config_file
   puts 'Civis File:'
   puts civis_file
   puts 'Upload Fields Keys:'
