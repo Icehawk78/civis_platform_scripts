@@ -8,7 +8,7 @@ def get_https(url)
   uri = URI.parse(url)
   https = Net::HTTP.new(uri.host, uri.port)
   https.use_ssl = true
-  uri, https
+  return uri, https
 end
 
 def get_url(url)
