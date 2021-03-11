@@ -13,7 +13,7 @@ end
 
 def get_url(url)
   uri, https = get_https(url)
-  req = Net::HTTP::Get.new(uri.path)
+  req = Net::HTTP::Get.new(uri)
   https.request(req).body
 end
 
