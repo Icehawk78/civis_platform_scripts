@@ -48,7 +48,7 @@ begin
   @json['other_seeds']['features'].push(*new_features)
   new_config = JSON.pretty_generate(@json)
   File.write('config.json', new_config)
-  config_file = File.new('config.json')
+  config_file = File.open('config.json')
   civis_file = JSON.parse(RestClient.post("#{ENV['CIVIS_API_ENDPOINT']}/files", {name: 'config.json'}, {'Authorization': "Bearer #{ENV['CIVIS_API_KEY']}"}))
   upload_fields = {key: civis_file['uploadFields']['key']}
   civis_file['uploadFields'].each{|k,v|
