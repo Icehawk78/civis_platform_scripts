@@ -15,6 +15,7 @@ begin
       'parent_id': nil,
       'variable_type_id': (ENV['is_multiselect'] ? 5 : 3),
       'is_cuttable': true,
+      'is_plottable': true,
       'value': nil
     }
     @json['other_seeds']['features'] << root_feature
@@ -30,6 +31,7 @@ begin
     ui_section_id: root_feature['ui_section_id'],
     variable_type_id: root_feature['variable_type_id'],
     is_cuttable: root_feature['is_cuttable'],
+    is_plottable: root_feature['is_plottable'],
     props: {}
   }
 
