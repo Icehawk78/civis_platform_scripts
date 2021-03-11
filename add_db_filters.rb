@@ -5,7 +5,7 @@ require 'rest-client'
 begin
   @json = JSON.parse(RestClient.get(ENV['json_config_url']).body)
   base_id = @json['other_seeds']['features'].map{|f| f['id']}.compact.max + 1
-  root_feature = @json['other_seeds']['features'].find{|f| f['id'] == ENV['root_id']} if ENV['root_id']
+  root_feature = ENV['root_id'] ? @json['other_seeds']['features'].find{|f| f['id'] == ENV['root_id'].to_i} : nil
   if root_feature.nil?
     root_feature = {
       'id': base_id,
