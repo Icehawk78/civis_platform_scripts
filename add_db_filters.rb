@@ -57,7 +57,7 @@ begin
   RestClient.post(civis_file['uploadUrl'] + '/', upload_fields, {'Authorization': "Bearer #{ENV['CIVIS_API_KEY']}"})
   # civis_file_id = post_url("#{ENV['CIVIS_API_ENDPOINT']}/json_values", {name: 'config.json', valueStr: new_config})
   RestClient.post("#{ENV['CIVIS_API_ENDPOINT']}/scripts/containers/#{ENV['CIVIS_JOB_ID']}/runs/#{ENV['CIVIS_RUN_ID']}/outputs", {objectType: 'File', objectId: civis_file['id']}, {'Authorization': "Bearer #{ENV['CIVIS_API_KEY']}"})
-rescue PG::Error => e
+rescue => e
   puts e.message
 ensure
   @connection.close if @connection
