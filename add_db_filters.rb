@@ -14,6 +14,7 @@ def get_url(url)
   https = get_https(url)
   req = Net::HTTP::Get.new(https.path)
   https.request(req).body
+  https
 end
 
 def post_url(url, data)
