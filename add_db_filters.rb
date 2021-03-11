@@ -71,7 +71,7 @@ begin
   @json['other_seeds']['features'].push(*new_features)
   new_config = JSON.pretty_generate(@json)
   civis_file = post_url("#{ENV['CIVIS_API_ENDPOINT']}/files", {name: 'config.json'})
-  puts civis_file['uploadFields'].class
+  puts civis_file['uploadFields']
   upload_fields = JSON.parse(civis_file['uploadFields'])
   upload_fields['file'] = new_config
   post_url(civis_file['uploadUrl'], upload_fields)
