@@ -51,7 +51,7 @@ begin
   File.write('config.json', new_config)
   config_file = File.new('config.json')
   civis_file = JSON.parse(RestClient.post("#{ENV['CIVIS_API_ENDPOINT']}/files", {name: 'config.json'}, {'Authorization': "Bearer #{ENV['CIVIS_API_KEY']}"}))
-  upload_fields = {files: {'file': config_file}, data: civis_file['uploadFields']}
+  upload_fields = {file: config_file, data: civis_file['uploadFields']}
   puts 'Civis File:'
   puts civis_file
   puts 'Upload Fields Keys:'
