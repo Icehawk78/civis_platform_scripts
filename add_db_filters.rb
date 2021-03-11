@@ -12,13 +12,13 @@ end
 
 def get_url(url)
   https = get_https(url)
-  req = Net::HTTP::GET.new(https.path)
+  req = Net::HTTP::Get.new(https.path)
   https.request(req).body
 end
 
 def post_url(url, data)
   https = get_https(url)
-  req = Net::HTTP::POST.new(https.path)
+  req = Net::HTTP::Post.new(https.path)
   req.set_form_data(data)
   https.request(req).body
 end
