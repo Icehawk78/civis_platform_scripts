@@ -11,12 +11,14 @@ begin
       'id': base_id,
       'name': ENV['root_name'] || 'Default Root Name',
       'column_name': ENV['column_name'],
+      'value': nil,
       'root_id': nil,
       'parent_id': nil,
+      'ui_section_id': ENV['ui_section_id'].to_i,
       'variable_type_id': (ENV['is_multiselect'] ? 5 : 3),
       'is_cuttable': true,
       'is_plottable': true,
-      'value': nil
+      'props': {}
     }
     @json['other_seeds']['features'] << root_feature
     base_id += 1
@@ -26,8 +28,8 @@ begin
     name: '',
     column_name: '',
     value: '',
-    parent_id: root_feature['id'],
     root_id: root_feature['id'],
+    parent_id: root_feature['id'],
     ui_section_id: root_feature['ui_section_id'],
     variable_type_id: root_feature['variable_type_id'],
     is_cuttable: root_feature['is_cuttable'],
